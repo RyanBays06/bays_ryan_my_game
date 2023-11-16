@@ -49,6 +49,7 @@ class Game:
         self.all_sprites = pg.sprite.Group()
         self.all_platforms = pg.sprite.Group()
         self.all_mobs = pg.sprite.Group()
+        self.all_coins = pg.sprite.Group()
         # instantiate classes
         self.player = Player(self)
         # add instances to groups
@@ -62,9 +63,14 @@ class Game:
             self.all_platforms.add(plat)
 
         for m in range(0,5):
-            m = Mob(randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "moving")
+            m = Mob(randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "normal")
             self.all_sprites.add(m)
             self.all_mobs.add(m)
+        
+        for c in range(0,5):
+            c = Coins(randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "normal")
+            self.all_sprites.add(c)
+            self.all_coins.add(c)
        
         self.run()
     
@@ -82,6 +88,24 @@ class Game:
             self.player.pos.x = WIDTH
         if self.player.pos.x > WIDTH:
             self.player.pos.x = 0
+        
+        
+        # player gets health back when he collects coins
+        elif self.player.vel.y <= 0:
+            hits = pg.sprite.spritecollide(self.player, self.all_coins, True)
+            if hits:
+                self.player.acc.y = 5
+                self.player.vel.y = 0
+                print("yuh")
+                self.player.hitpoints += 5
+                if self.player.hitpoints < 100:
+                    self.player.hitpoints += 5
+                if self.player.hitpoints == 100:
+                    self.player.hitpoints += 0
+                if self.player.rect.bottom >= hits[0].rect.top - 1:
+                    self.player.rect.top = hits[0].rect.bottom
+        
+        
         
         # this is what prevents the player from falling through the platform when falling down...
         if self.player.vel.y >= 0:
