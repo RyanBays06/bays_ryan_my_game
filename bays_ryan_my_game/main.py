@@ -62,7 +62,7 @@ class Game:
             self.all_platforms.add(plat)
 
         for m in range(0,5):
-            m = Mob(randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "normal")
+            m = Mob(randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "moving")
             self.all_sprites.add(m)
             self.all_mobs.add(m)
        
@@ -120,6 +120,17 @@ class Game:
                     sprite.kill()
         if len(self.all_platforms) == 0:
             self.playing = False
+
+        # Old platforms will be replaced by new platforms
+        while len(self.all_platforms) < 6:
+            width = random.randrange(50,100)
+            p = Platform(random.randrange(0, WIDTH - width),
+                         random.randrange(-75, -30),
+                         width, 20, "normal")
+            self.all_platforms.add(p)
+            self.all_sprites.add(p)
+        
+
                     
         
 
@@ -141,6 +152,7 @@ class Game:
         # draw all sprites
         self.all_sprites.draw(self.screen)
         self.draw_text("Hitpoints: " + str(self.player.hitpoints), 22, WHITE, WIDTH/2, HEIGHT/10)
+        self.draw_text("Score: " + str(self.score), 22, WHITE, WIDTH/2, HEIGHT/7)
         # buffer - after drawing everything, flip display
         pg.display.flip()
 

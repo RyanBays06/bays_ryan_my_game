@@ -87,6 +87,14 @@ class Mob(Sprite):
         self.pos = vec(WIDTH/2, HEIGHT/2)
         self.category = category
         self.speed = 0
+        if self.category == "moving":
+            self.speed = 5
+    def update(self):
+        if self.category == "moving":
+            self.rect.x += self.speed
+            if self.rect.x + self.rect.w > WIDTH or self.rect.x < 0:
+                self.speed = -self.speed
+    
              
                 
 

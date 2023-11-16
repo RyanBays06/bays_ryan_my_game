@@ -27,5 +27,9 @@ PLATFORM_LIST = [(0, HEIGHT - 40, WIDTH, 40, "normal"),
                  (222, 200, 100, 20, "normal"),
                  (175, 100, 50, 20, "normal")]
 
+from random import randint
+import math
+MOB_LIST = (randint(0, WIDTH), randint(0, math.floor(HEIGHT/2)), 20, 20, "moving")
+
 
 
